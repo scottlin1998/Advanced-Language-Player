@@ -1,4 +1,4 @@
-import { app, BrowserWindow, nativeTheme } from 'electron'
+import { app, BrowserWindow, nativeTheme, ipcMain } from 'electron'
 import fs from 'fs'
 import path from 'path'
 
@@ -36,6 +36,10 @@ function createWindow() {
       mainWindow!.webContents.closeDevTools()
     })
   }
+  // 窗口准备关闭时, 退出mpv
+  mainWindow.on('close', () => mainWindow!.webContents.send('mpv-exit'))
+  // mpv进程退出时，退出应用
+  ipcMain.on('mpv-exit', () => app.quit());
 
   mainWindow.on('closed', () => {
     mainWindow = null
@@ -51,12 +55,13 @@ if (!gotTheLock) {
   app.on('second-instance', (event, argv) => {
     if (mainWindow) {
       if (mainWindow.isMinimized()) mainWindow.restore();
-      // mainWindow.webContents.send("path", argv[9]);
+      // mainWindow.webContents.send('path', argv[9]);
       mainWindow.focus()
       mainWindow.show()
     }
   })
 }
+
 
 app.on('ready', createWindow)
 
