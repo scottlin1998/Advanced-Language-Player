@@ -1,15 +1,16 @@
 import { app, BrowserWindow, nativeTheme } from 'electron'
+import fs from 'fs'
 import path from 'path'
 
 try {
   if (process.platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
-    require('fs').unlinkSync(require('path').join(app.getPath('userData'), 'DevTools Extensions'))
+    fs.unlinkSync(path.join(app.getPath('userData'), 'DevTools Extensions'))
   }
 } catch (_) { }
 
-let mainWindow
+let mainWindow: BrowserWindow | null = null;
 
-function createWindow () {
+function createWindow() {
   /**
    * Initial window options
    */
@@ -20,11 +21,11 @@ function createWindow () {
     webPreferences: {
       contextIsolation: true,
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
-      preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD)
+      preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD!)
     }
   })
 
-  mainWindow.loadURL(process.env.APP_URL)
+  mainWindow.loadURL(process.env.APP_URL!)
 
   if (process.env.DEBUGGING) {
     // if on DEV or Production with debug enabled
@@ -32,7 +33,7 @@ function createWindow () {
   } else {
     // we're on production; no access to devtools pls
     mainWindow.webContents.on('devtools-opened', () => {
-      mainWindow.webContents.closeDevTools()
+      mainWindow!.webContents.closeDevTools()
     })
   }
 
