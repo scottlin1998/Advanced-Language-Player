@@ -73,7 +73,7 @@ module.exports = configure(function (ctx) {
 
       // https://v2.quasar.dev/quasar-cli/handling-webpack
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
-      chainWebpack (/* chain */) {
+      chainWebpack(/* chain */) {
         //
       },
     },
@@ -115,12 +115,12 @@ module.exports = configure(function (ctx) {
       // manualPostHydrationTrigger: true,
 
       prodPort: 3000, // The default port that the production server should use
-                      // (gets superseded if process.env.PORT is specified at runtime)
+      // (gets superseded if process.env.PORT is specified at runtime)
 
       maxAge: 1000 * 60 * 60 * 24 * 30,
-        // Tell browser when a file from the server should expire from cache (in ms)
+      // Tell browser when a file from the server should expire from cache (in ms)
 
-      chainWebpackWebserver (/* chain */) {
+      chainWebpackWebserver(/* chain */) {
         //
       },
 
@@ -137,7 +137,7 @@ module.exports = configure(function (ctx) {
 
       // for the custom service worker ONLY (/src-pwa/custom-service-worker.[js|ts])
       // if using workbox in InjectManifest mode
-      chainWebpackCustomSW (/* chain */) {
+      chainWebpackCustomSW(/* chain */) {
         //
       },
 
@@ -191,7 +191,7 @@ module.exports = configure(function (ctx) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli/developing-electron-apps/configuring-electron
     electron: {
-      bundler: 'packager', // 'packager' or 'builder'
+      bundler: 'builder', // 'packager' or 'builder'
 
       packager: {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
@@ -208,18 +208,45 @@ module.exports = configure(function (ctx) {
 
       builder: {
         // https://www.electron.build/configuration/configuration
-
-        appId: 'advanced_language_player'
+        appId: 'advanced_language_player',
+        productName: "阿耀语伴",
+        fileAssociations: [
+          {
+            ext: ["avi ", "vfw", "divx", "mpg", "mpeg", "m1v", "m2v", "mpv", "dv", "3gp", "mov", "mp4", "m4v", "mqv", "dat", "vcd", "ogg", "ogm", "ogv", "ogx", "asf", "wmv", "bin", "iso", "vob", "mkv", "nsv", "ram", "flv", "rm", "swf", "ts", "rmvb", "dvr-ms", "m2t", "m2ts", "mts", "rec", "wtv", "f4v", "hdmov", "webm", "vp8", "bik", "smk", "m4b", "wtv", "part"],
+            name: "视频",
+            role: "Editor"
+          },
+          {
+            ext: ["mp3", "ogg", "oga", "wav", "wma", "aac", "ac3", "dts", "ra", "ape", "flac", "thd", "mka", "m4a", "opus"],
+            name: "音频",
+            role: "Editor"
+          }
+        ],
+        extraResources: ["./extraResources/**"],
+        win: {
+          icon: "public/favicon.ico",
+        },
+        nsis: {
+          // 一键安装
+          oneClick: false,
+          // 允许修改安装目录
+          allowToChangeInstallationDirectory: true,
+          createDesktopShortcut: true,
+          createStartMenuShortcut: false,
+          // 图标名称
+          // shortcutName: "xxxx",
+          runAfterFinish: false
+        }
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
-      chainWebpack (/* chain */) {
+      chainWebpack(/* chain */) {
         // do something with the Electron main process Webpack cfg
         // extendWebpackMain also available besides this chainWebpackMain
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
-      chainWebpackPreload (/* chain */) {
+      chainWebpackPreload(/* chain */) {
         // do something with the Electron main process Webpack cfg
         // extendWebpackPreload also available besides this chainWebpackPreload
       },
