@@ -42,6 +42,22 @@ function createWindow() {
   })
 }
 
+
+// 单实例模式
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', (event, argv) => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      // mainWindow.webContents.send("path", argv[9]);
+      mainWindow.focus()
+      mainWindow.show()
+    }
+  })
+}
+
 app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {
