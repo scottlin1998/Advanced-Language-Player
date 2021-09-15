@@ -4,3 +4,14 @@ declare module '*.vue' {
   const component: ComponentOptions
   export default component
 }
+
+// import { MediaPlayer } from '../src-electron/MediaPlayer'
+declare interface Window {
+  instances: {
+    mediaPlayer: {
+      currentIndex: string,
+      togglePlay: () => void,
+      currentMode: number
+    }
+  }
+}

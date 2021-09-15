@@ -15,3 +15,9 @@
  *     doAThing: () => {}
  *   })
  */
+
+import { contextBridge } from 'electron'
+import mediaPlayer from './MediaPlayer'
+contextBridge.exposeInMainWorld('instances', {
+    mediaPlayer,
+})
